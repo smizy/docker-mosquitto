@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/deps
 
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:17.06.0-ce-git
 
     environment:
       VERSION: "1.4.15"
@@ -20,7 +20,7 @@ jobs:
       - checkout
 
       - setup_remote_docker:
-          version: 17.05.0-ce          
+          version: 17.06.0-ce          
 
       - run:
           name: install dependencies - lib
@@ -79,4 +79,4 @@ jobs:
             fi
 
             docker logout
-            curl -X POST 'https://hooks.microbadger.com/images/smizy/mosquitto/Nnw1Z-4ZWKaJKNvvwVOame1-0pw='
+            curl -X POST 'https://hooks.microbadger.com/images/smizy/mosquitto/bA2FenwNwFMUNSsaQkKi9sg5qUM='
