@@ -7,8 +7,8 @@ jobs:
       - image: docker:17.05.0-ce-git
 
     environment:
-      VERSION: "1.4.12"
-      TAG: "1.4.12-alpine"
+      VERSION: "1.4.15"
+      TAG: "1.4.15-alpine"
       # TAG: ${VERSION}-alpine
       # TAG_MINOR: ${VERSION%.*}-alpine
       # TAG_MAJOR: ${VERSION%%.*}-alpine 
@@ -66,16 +66,17 @@ jobs:
             TAG_MINOR=${VERSION%.*}-alpine
             TAG_MAJOR=${VERSION%%.*}-alpine
 
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker login -u $DOCKER_USER -p $DOCKER_PASS
-              docker image tag smizy/mosquitto:${TAG} smizy/mosquitto
-              docker image tag smizy/mosquitto:${TAG} smizy/mosquitto:${TAG_MINOR}
-              docker image tag smizy/mosquitto:${TAG} smizy/mosquitto:${TAG_MAJOR}
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            
+            docker image tag smizy/mosquitto:${TAG} smizy/mosquitto
+            docker image push smizy/mosquitto:${TAG}
 
-              docker image push smizy/mosquitto:${TAG}
-              docker image push smizy/mosquitto:${TAG_MINOR}
-              docker image push smizy/mosquitto:${TAG_MAJOR}              
+            docker image tag smizy/mosquitto:${TAG} smizy/mosquitto:${TAG_MINOR}
+            docker image push smizy/mosquitto:${TAG_MINOR}
+
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker image push smizy/mosquitto:latest
-              docker logout
-              curl -X POST 'https://hooks.microbadger.com/images/smizy/mosquitto/Nnw1Z-4ZWKaJKNvvwVOame1-0pw='
             fi
+
+            docker logout
+            curl -X POST 'https://hooks.microbadger.com/images/smizy/mosquitto/Nnw1Z-4ZWKaJKNvvwVOame1-0pw='
